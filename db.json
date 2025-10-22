@@ -1,0 +1,44 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin Demo",
+      "email": "admin@demo.com",
+      "password": "123456",
+      "role": "admin"
+    }
+  ],
+  "courses": [
+    {
+      "id": 1,
+      "name": "React Básico",
+      "description": "Curso introdutório de React.",
+      "start_date": "2025-10-20",
+      "end_date": "2025-12-31",
+      "creator_id": 1,
+      "instructors": [
+        1
+      ]
+    }
+  ],
+  "lessons": [
+    {
+      "id": 1,
+      "title": "Introdução ao React",
+      "status": "published",
+      "publish_date": "2025-11-01",
+      "video_url": "https://youtu.be/NhUr8cwDiiM?si=VwNNQ548ypN4q4SY",
+      "course_id": 1,
+      "creator_id": 1
+    },
+    {
+      "title": "Hooks",
+      "status": "draft",
+      "publish_date": "2025-02-11",
+      "video_url": "https://youtu.be/Fc-___dblSI?si=6a0A2SWZVfX33dSR",
+      "course_id": 1,
+      "creator_id": 1,
+      "id": 2
+    }
+  ]
+}
