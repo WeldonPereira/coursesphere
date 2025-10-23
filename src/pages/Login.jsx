@@ -31,7 +31,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-white to-orange-50 px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-linear-to-br from-blue-50 via-white to-orange-50 px-4">
       <div className="w-full max-w-md bg-white/90 backdrop-blur-md p-8 rounded-2xl shadow-lg">
         <h2 className="text-3xl font-semibold text-center mb-6 text-blue-700">
           Bem-vindo ao <span className="text-orange-500">CourseSphere</span>

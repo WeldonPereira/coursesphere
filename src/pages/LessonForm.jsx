@@ -57,7 +57,7 @@ export default function LessonForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-blue-50 pt-20 px-6">
+    <div className="min-h-screen bg-linear-to-br from-orange-50 via-white to-blue-50 pt-20 px-6">
       <div className="max-w-2xl mx-auto bg-white/90 backdrop-blur-sm rounded-2xl shadow p-6">
         <h2 className="text-2xl font-semibold text-blue-700 mb-6">
           {id ? "Editar Aula" : "Nova Aula"}

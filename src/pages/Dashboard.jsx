@@ -28,7 +28,7 @@ export default function Dashboard() {
     );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-blue-50 pt-20 px-6">
+    <div className="min-h-screen bg-linear-to-br from-orange-50 via-white to-blue-50 pt-20 px-6">
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-8">
           <h1 className="text-3xl font-semibold text-blue-800 mb-4 sm:mb-0">
