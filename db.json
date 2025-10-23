@@ -16,9 +16,7 @@
       "start_date": "2025-10-20",
       "end_date": "2025-12-31",
       "creator_id": 1,
-      "instructors": [
-        1
-      ]
+      "instructors": [1]
     }
   ],
   "lessons": [
