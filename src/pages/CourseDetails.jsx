@@ -2,22 +2,21 @@ import { useEffect, useState } from "react";
 import API from "../api/axios";
 import { useParams, Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import InstructorPicker from "../components/InstructorPicker";
 
 export default function CourseDetails() {
   const { id } = useParams();
   const { user } = useAuth();
   const [course, setCourse] = useState(null);
   const [lessons, setLessons] = useState([]);
+  const [instructors, setInstructors] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [q, setQ] = useState("");
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
 
-  const handleSearch = () => {
-    setSearch(q);
-  };
-
+  const handleSearch = () => setSearch(q);
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -25,25 +24,45 @@ export default function CourseDetails() {
     }
   };
 
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const [courseRes, lessonsRes] = await Promise.all([
+        API.get(`/courses/${id}`),
+        API.get(`/lessons`, { params: { course_id: id } }),
+      ]);
+
+      let items = lessonsRes.data;
+      if (filterStatus) items = items.filter((l) => l.status === filterStatus);
+      if (search)
+        items = items.filter((l) =>
+          l.title.toLowerCase().includes(search.toLowerCase())
+        );
+
+      const c = courseRes.data;
+      setCourse(c);
+      setLessons(items);
+
+      if (c.instructors?.length > 0) {
+        const instructorsData = await Promise.all(
+          c.instructors.map((id) => API.get(`/users/${id}`))
+        );
+        setInstructors(instructorsData.map((r) => r.data));
+      } else {
+        setInstructors([]);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    setLoading(true);
-    Promise.all([
-      API.get(`/courses/${id}`),
-      API.get(`/lessons`, { params: { course_id: id } }),
-    ])
-      .then(([courseRes, lessonsRes]) => {
-        let items = lessonsRes.data;
-        if (filterStatus)
-          items = items.filter((l) => l.status === filterStatus);
-        if (search)
-          items = items.filter((l) =>
-            l.title.toLowerCase().includes(search.toLowerCase())
-          );
-        setCourse(courseRes.data);
-        setLessons(items);
-      })
-      .finally(() => setLoading(false));
+    fetchData();
   }, [id, search, filterStatus]);
+
+  const handleInstructorAdded = (newInstructor) => {
+    setInstructors((prev) => [...prev, newInstructor]);
+  };
 
   if (loading)
     return (
@@ -68,7 +87,8 @@ export default function CourseDetails() {
           <div className="text-sm text-gray-500 mb-4">
             {course.start_date} até {course.end_date}
           </div>
-          <div className="flex gap-3">
+
+          <div className="flex gap-3 flex-wrap mb-4">
             {canEditCourse && (
               <Link
                 to={`/courses/${id}/edit`}
@@ -84,6 +104,33 @@ export default function CourseDetails() {
               Nova Aula
             </Link>
           </div>
+
+          {canEditCourse && (
+            <div className="mt-4">
+              <InstructorPicker courseId={id} onAdded={handleInstructorAdded} />
+            </div>
+          )}
+        </div>
+
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow p-6 mb-6">
+          <h3 className="text-xl font-semibold text-blue-700 mb-3">
+            Instrutores
+          </h3>
+          {instructors.length > 0 ? (
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {instructors.map((inst) => (
+                <div
+                  key={inst.id}
+                  className="border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition"
+                >
+                  <p className="font-medium text-gray-800">{inst.name}</p>
+                  <p className="text-sm text-gray-500">{inst.email}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-600">Nenhum instrutor adicionado ainda.</p>
+          )}
         </div>
 
         <div className="flex flex-wrap gap-3 mb-6">
@@ -147,6 +194,11 @@ export default function CourseDetails() {
               </div>
             </div>
           ))}
+          {lessons.length === 0 && (
+            <p className="text-gray-600 text-center">
+              Nenhuma aula encontrada.
+            </p>
+          )}
         </div>
       </div>
     </div>
