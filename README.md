@@ -68,13 +68,13 @@ cd coursesphere
 ```bash
 npm install
 ```
-### 3. Rodar o ambiente de desenvolvimento
-```bash
-npm run dev
-```
-### 4. Iniciar o servidor local (em um terminal separado)
+### 3. Iniciar o servidor local 
 ```bash
 npm run server
+```
+### 4. Rodar o ambiente de desenvolvimento (em um terminal separado)
+```bash
+npm run dev
 ```
 ### 5. Acessar o sistema
 ```bash
